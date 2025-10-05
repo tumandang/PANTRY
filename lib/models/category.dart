@@ -12,7 +12,7 @@ class Category {
 
 }
   List <Category> myCategory = [
-    Category(name: "All", image: "assets/img/all.png"),
+    Category(name: "All", image: "assets/img/unipantry_logo.png"),
     Category(image: 'assets/img/maggie.png', name: 'Meals'),
     Category(image: 'assets/img/drinks.png', name: 'Drink'),
     Category(image: 'assets/img/snack.png', name: 'Snack'),
