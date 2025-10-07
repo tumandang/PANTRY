@@ -1,18 +1,18 @@
 import 'package:cubaantest/components/fooditem.dart';
-import 'package:cubaantest/models/food.dart';
-import 'package:flutter/material.dart';
 import 'package:cubaantest/models/category.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart';
 
-class HomeContentPage extends StatefulWidget {
+import '../models/food.dart';
+
+class FoodPage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  HomeContentPage({super.key});
+  FoodPage({super.key});
 
   @override
-  State<HomeContentPage> createState() => _HomeContentPageState();
+  State<FoodPage> createState() => _FoodPageState();
 }
 
-class _HomeContentPageState extends State<HomeContentPage> {
+class _FoodPageState extends State<FoodPage> {
   int selectedIndex = 0;
 
   List<Food> get filteredFood {
@@ -28,6 +28,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
       category = categoryselect;
     });
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -42,41 +43,23 @@ class _HomeContentPageState extends State<HomeContentPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CircleAvatar(
-                        radius: 22,
-                        backgroundColor: Colors.white,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.black,
-                          size: 24,
+                      Text(
+                        'Hi Hazriq!',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.inversePrimary,
+                          fontFamily: 'SpecialGhotic',
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hi, Hazriq 👋',
-                            style: TextStyle(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.inversePrimary,
-                              fontFamily: 'CalSans',
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            DateFormat('dd MMM yyyy').format(DateTime.now()),
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 13,
-                            ),
-                          ),
-                        ],
+                      Text(
+                        '21 Dec 2024',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ],
                   ),
@@ -108,16 +91,14 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
                 ),
                 padding: EdgeInsets.all(12),
                 child: Row(
                   children: [
                     Icon(
                       Icons.search,
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    SizedBox(width: 10),
                     Text(
                       'Seacrh',
                       style: TextStyle(
@@ -128,7 +109,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              SizedBox(height: 12),
 
               // Text(
               //           'No Student Eats Alone.',
@@ -139,6 +120,27 @@ class _HomeContentPageState extends State<HomeContentPage> {
               //             fontWeight: FontWeight.bold
               //           ),
               //         ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'Search by Category',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.normal,
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                        fontFamily: 'SpecialGhotic',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(height: 25),
+
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Padding(
@@ -170,7 +172,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                                   : const LinearGradient(
                                       colors: [Colors.white, Colors.white],
                                     ),
-                              borderRadius: BorderRadius.circular(7),
+                              borderRadius: BorderRadius.circular(10),
                               border: Border.all(
                                 color: selectedIndex == index
                                     ? Colors.amber.shade700
@@ -179,7 +181,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.grey.shade400,
+                                  color: Colors.grey.withOpacity(0.15),
                                   blurRadius: 5,
                                   offset: const Offset(0, 2),
                                 ),
@@ -217,21 +219,6 @@ class _HomeContentPageState extends State<HomeContentPage> {
               ),
 
               SizedBox(height: 15),
-              
-               Container(
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  borderRadius: BorderRadius.circular(7),
-                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                ),
-                padding: EdgeInsets.all(12),
-                child: Center(child: Text('Banner')),
-                
-              ),
-
-
-              SizedBox(height: 15),
 
               Padding(
                 padding: const EdgeInsets.all(5.0),
@@ -252,23 +239,37 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ),
               ),
               SizedBox(height: 15),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                child: Row(
-                  children: [
-                    ...List.generate(
-                      filteredFood.length,
-                      (index) => Padding(
-                        padding: index == 0
-                            ? EdgeInsets.only(left: 10, right: 10)
-                            : EdgeInsets.only(right: 10),
-                        child: Fooditem(FoodModel: filteredFood[index]),
-                      ),
-                    ),
-                  ],
+              Expanded(
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: (0.6),
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                  ),
+                  scrollDirection: Axis.vertical,
+                  itemCount: filteredFood.length,
+                  itemBuilder: (context, index) {
+                    final food = filteredFood[index];
+                    return Fooditem(FoodModel: food);
+                  },
                 ),
               ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.vertical,
+              //   physics: BouncingScrollPhysics(),
+              //   child: Row(
+              //     children: [
+              //       ...List.generate(
+              //         filteredFood.length,
+              //         (index) => Padding(
+              //            padding: EdgeInsets.only(bottom: 10),
+              //           child: Fooditem(FoodModel: filteredFood[index]),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -276,3 +277,5 @@ class _HomeContentPageState extends State<HomeContentPage> {
     );
   }
 }
+
+

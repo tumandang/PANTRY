@@ -2,6 +2,7 @@ import 'package:cubaantest/pages/Homepage.dart';
 import 'package:cubaantest/pages/borrow.dart';
 import 'package:cubaantest/pages/cart.dart';
 import 'package:cubaantest/pages/donation.dart';
+import 'package:cubaantest/pages/foodpage.dart';
 
 import 'package:cubaantest/pages/profile.dart';
 import 'package:cubaantest/pages/scan.dart';
@@ -24,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   final List _pages = [
     HomeContentPage(),
+    FoodPage(),
     ScanPage(),
     BorrowPage(),
     ProfilePage(),
@@ -134,21 +136,21 @@ class _HomePageState extends State<HomePage> {
           //Home
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.food_bank_outlined,
+              Icons.home_outlined,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
 
-            label: ' ',
+            label: 'HOME',
           ),
 
-          // //Donation
-          // BottomNavigationBarItem(
-          //   icon: Icon(
-          //     Icons.wallet_giftcard,
-          //     color: Theme.of(context).colorScheme.inversePrimary,
-          //   ),
-          //   label: ' ',
-          // ),
+          //Food
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.food_bank_outlined,
+              color: Theme.of(context).colorScheme.inversePrimary,
+            ),
+            label: 'FOOD',
+          ),
 
           //Scan
           BottomNavigationBarItem(
@@ -158,7 +160,7 @@ class _HomePageState extends State<HomePage> {
             
             ),
             
-           label: ' '),
+           label: 'SCAN'),
             
           //Borrow
           BottomNavigationBarItem(
@@ -166,7 +168,7 @@ class _HomePageState extends State<HomePage> {
               Icons.handshake_outlined,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            label: ' ',
+            label: 'Donation',
           ),
 
           //Profile
@@ -175,7 +177,7 @@ class _HomePageState extends State<HomePage> {
               Icons.person_2_outlined,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            label: ' ',
+            label: 'Profile',
           ),
         ],
       ),

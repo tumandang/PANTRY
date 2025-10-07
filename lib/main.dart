@@ -2,6 +2,7 @@ import 'package:cubaantest/models/cartmanager.dart';
 import 'package:cubaantest/pages/borrow.dart';
 import 'package:cubaantest/pages/cart.dart';
 import 'package:cubaantest/pages/donation.dart';
+import 'package:cubaantest/pages/foodpage.dart';
 import 'package:cubaantest/pages/home.dart';
 
 import 'package:cubaantest/pages/profile.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       theme: Provider.of<Themeprovider>(context).themedata,
       routes: {
         '/homepage': (context) => HomePage(),
+        '/foodpage': (context) => FoodPage(),
         '/profilepage': (context) => ProfilePage(),
         '/scanpage' : (context) => ScanPage(),
         '/donationpage' : (context) => DonationPage(),
