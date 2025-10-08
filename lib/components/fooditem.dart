@@ -1,6 +1,6 @@
-import 'package:cubaantest/models/cartitem.dart';
-import 'package:cubaantest/models/cartmanager.dart';
-import 'package:cubaantest/models/food.dart';
+import 'package:pantry/models/cartitem.dart';
+import 'package:pantry/models/cartmanager.dart';
+import 'package:pantry/models/food.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

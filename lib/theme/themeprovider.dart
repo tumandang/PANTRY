@@ -1,5 +1,5 @@
-import 'package:cubaantest/theme/darkmode.dart';
-import 'package:cubaantest/theme/lightmode.dart';
+import 'package:pantry/theme/darkmode.dart';
+import 'package:pantry/theme/lightmode.dart';
 import 'package:flutter/material.dart';
 
 class Themeprovider with ChangeNotifier{

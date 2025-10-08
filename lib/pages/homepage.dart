@@ -1,7 +1,7 @@
-import 'package:cubaantest/components/fooditem.dart';
-import 'package:cubaantest/models/food.dart';
+import 'package:pantry/components/fooditem.dart';
+import 'package:pantry/models/food.dart';
 import 'package:flutter/material.dart';
-import 'package:cubaantest/models/category.dart';
+import 'package:pantry/models/category.dart';
 import 'package:intl/intl.dart';
 
 class HomeContentPage extends StatefulWidget {
