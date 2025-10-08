@@ -1,5 +1,5 @@
-import 'package:cubaantest/components/fooditem.dart';
-import 'package:cubaantest/models/category.dart';
+import 'package:PANTRY/components/fooditem.dart';
+import 'package:PANTRY/models/category.dart';
 import 'package:flutter/material.dart';
 
 import '../models/food.dart';

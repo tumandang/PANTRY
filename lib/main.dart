@@ -1,13 +1,13 @@
-import 'package:cubaantest/models/cartmanager.dart';
-import 'package:cubaantest/pages/borrow.dart';
-import 'package:cubaantest/pages/cart.dart';
-import 'package:cubaantest/pages/donation.dart';
-import 'package:cubaantest/pages/foodpage.dart';
-import 'package:cubaantest/pages/home.dart';
+import 'package:PANTRY/models/cartmanager.dart';
+import 'package:PANTRY/pages/borrow.dart';
+import 'package:PANTRY/pages/cart.dart';
+import 'package:PANTRY/pages/donation.dart';
+import 'package:PANTRY/pages/foodpage.dart';
+import 'package:PANTRY/pages/home.dart';
 
-import 'package:cubaantest/pages/profile.dart';
-import 'package:cubaantest/pages/scan.dart';
-import 'package:cubaantest/theme/themeprovider.dart';
+import 'package:PANTRY/pages/profile.dart';
+import 'package:PANTRY/pages/scan.dart';
+import 'package:PANTRY/theme/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
