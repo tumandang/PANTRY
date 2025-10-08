@@ -1,10 +1,10 @@
-import 'package:PANTRY/pages/Homepage.dart';
-import 'package:PANTRY/pages/borrow.dart';
-import 'package:PANTRY/pages/cart.dart';
-import 'package:PANTRY/pages/donation.dart';
-import 'package:PANTRY/pages/foodpage.dart';
-import 'package:PANTRY/pages/profile.dart';
-import 'package:PANTRY/pages/scan.dart';
+import 'package:pantry/pages/Homepage.dart';
+import 'package:pantry/pages/borrow.dart';
+import 'package:pantry/pages/cart.dart';
+import 'package:pantry/pages/donation.dart';
+import 'package:pantry/pages/foodpage.dart';
+import 'package:pantry/pages/profile.dart';
+import 'package:pantry/pages/scan.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inverseSurface,
         centerTitle: true,
         title: Text(
-          'UniPantry',
+          'Unipantry',
           style: TextStyle(
             color: Theme.of(context).colorScheme.inversePrimary,
             fontSize: 18,

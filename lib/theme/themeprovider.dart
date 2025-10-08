@@ -1,5 +1,5 @@
-import 'package:PANTRY/theme/darkmode.dart';
-import 'package:PANTRY/theme/lightmode.dart';
+import 'package:pantry/theme/darkmode.dart';
+import 'package:pantry/theme/lightmode.dart';
 import 'package:flutter/material.dart';
 
 class Themeprovider with ChangeNotifier{

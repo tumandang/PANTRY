@@ -1,4 +1,4 @@
-import 'package:PANTRY/models/cartitem.dart';
+import 'package:pantry/models/cartitem.dart';
 import 'package:flutter/material.dart';
 
 class Cartmanager extends ChangeNotifier {

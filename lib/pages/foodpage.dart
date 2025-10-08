@@ -1,5 +1,5 @@
-import 'package:PANTRY/components/fooditem.dart';
-import 'package:PANTRY/models/category.dart';
+import 'package:pantry/components/fooditem.dart';
+import 'package:pantry/models/category.dart';
 import 'package:flutter/material.dart';
 
 import '../models/food.dart';
