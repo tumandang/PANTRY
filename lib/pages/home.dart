@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                     'assets/img/unipantry_logo.png',
                     fit: BoxFit.contain,
                     width: 350,
-                    height: 350, 
+                    height: 350,
                   ),
             ),
 
@@ -123,8 +123,15 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-
-      
+      floatingActionButton: FloatingActionButton(
+        
+        onPressed: () {
+          Navigator.pushNamed(context, '/chatbotpage'); 
+        },
+        elevation: 12,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        child: Icon(Icons.chat_bubble_outline, color: Colors.white),
+      ),
 
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.surface,
@@ -154,13 +161,13 @@ class _HomePageState extends State<HomePage> {
           //Scan
           BottomNavigationBarItem(
             icon: Icon(
-            Icons.camera_alt_outlined,
-            color: Theme.of(context).colorScheme.inversePrimary,
-            
+              Icons.camera_alt_outlined,
+              color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            
-           label: 'SCAN'),
-            
+
+            label: 'SCAN',
+          ),
+
           //Borrow
           BottomNavigationBarItem(
             icon: Icon(
@@ -180,6 +187,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      
     );
   }
 }
