@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
 
-            label: 'HOME',
+            label: '',
           ),
 
           //Food
@@ -155,7 +155,7 @@ class _HomePageState extends State<HomePage> {
               Icons.food_bank_outlined,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            label: 'FOOD',
+            label: '',
           ),
 
           //Scan
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
 
-            label: 'SCAN',
+            label: '',
           ),
 
           //Borrow
@@ -174,17 +174,17 @@ class _HomePageState extends State<HomePage> {
               Icons.handshake_outlined,
               color: Theme.of(context).colorScheme.inversePrimary,
             ),
-            label: 'Donation',
+            label: '',
           ),
 
           //Profile
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_2_outlined,
-              color: Theme.of(context).colorScheme.inversePrimary,
-            ),
-            label: 'Profile',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(
+          //     Icons.person_2_outlined,
+          //     color: Theme.of(context).colorScheme.inversePrimary,
+          //   ),
+          //   label: '',
+          // ),
         ],
       ),
       

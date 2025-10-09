@@ -1,3 +1,4 @@
+import 'package:pantry/Auth_Page/login.dart';
 import 'package:pantry/models/cartmanager.dart';
 import 'package:pantry/pages/borrow.dart';
 import 'package:pantry/pages/cart.dart';
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: LoginPage(),
       theme: Provider.of<Themeprovider>(context).themedata,
       routes: {
         '/homepage': (context) => HomePage(),
