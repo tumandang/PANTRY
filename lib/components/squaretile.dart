@@ -9,7 +9,7 @@ class Squaretile extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.white),
+        border: Border.all(color: Colors.blue.shade400, width: 1.5),
         borderRadius: BorderRadius.circular(12),
         color: Colors.grey[200],
       ),

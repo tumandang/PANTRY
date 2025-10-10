@@ -240,7 +240,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      '${filteredFood.length} results',
+                      'Top Pick Up',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.inversePrimary,
                         fontFamily: 'SpecialGhotic',
