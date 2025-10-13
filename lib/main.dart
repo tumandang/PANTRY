@@ -1,4 +1,5 @@
 import 'package:pantry/Auth_Page/login.dart';
+import 'package:pantry/Auth_Page/register.dart';
 import 'package:pantry/models/cartmanager.dart';
 import 'package:pantry/pages/borrow.dart';
 import 'package:pantry/pages/cart.dart';
@@ -36,6 +37,8 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       theme: Provider.of<Themeprovider>(context).themedata,
       routes: {
+        '/loginpage':(context)=> LoginPage(),
+        '/registerpage':(context)=> RegisterPage(),
         '/homepage': (context) => HomePage(),
         '/foodpage': (context) => FoodPage(),
         '/profilepage': (context) => ProfilePage(),
