@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
     final password = TextEditingController();
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(

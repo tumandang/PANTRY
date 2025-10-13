@@ -9,37 +9,61 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final matrictid = TextEditingController();
-    final email= TextEditingController();
+    final email = TextEditingController();
     final name = TextEditingController();
     final confirmPassword = TextEditingController();
     final password = TextEditingController();
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              //logo
-              // Image.asset(
-              //   'assets/img/unipantry_logo.png',
-              //   height: 300,
-              //   width: 300,
-              // ),
-
               //Welcome Back
-              Text(
-                "Welcome To UniPntry",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontFamily: 'SpecialGhotic',
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+
+                  // logo
+                  children: [
+                    Image.asset(
+                      'assets/img/unipantry_logo.png',
+                      height: 100,
+                      width: 100,
+                    ),
+                    SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Create Account",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 25,
+                            fontFamily: 'SpecialGhotic',
+                          ),
+                        ),
+
+                        Text(
+                          "Slogan CampusPantry",
+                          style: TextStyle(
+                            color: Colors.grey.shade600,
+                            fontSize: 15,
+                            fontFamily: 'CalSans',
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(height: 25),
 
-            
               //username textfield
               MyTextField(
                 label: 'Name',
@@ -72,6 +96,7 @@ class RegisterPage extends StatelessWidget {
                 obscureText: true,
               ),
               SizedBox(height: 15),
+
               //confirm Password textfield
               MyTextField(
                 label: 'Confirm Password',
@@ -79,21 +104,7 @@ class RegisterPage extends StatelessWidget {
                 hintText: "Re-Type Your Password",
                 obscureText: true,
               ),
-              
-              // forgot password
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      
-                      onPressed: null,
-                      child: Text("Forgot Password"),
-                    ),
-                  ],
-                ),
-              ),
+
               SizedBox(height: 15),
               //sign in button
               Mybutton(
@@ -142,18 +153,16 @@ class RegisterPage extends StatelessWidget {
                   SizedBox(width: 2),
                   TextButton(
                     style: TextButton.styleFrom(
-                      textStyle: TextStyle(
-                        
-                        fontWeight: FontWeight.bold,
-
-                      )
+                      textStyle: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onPressed:() {
+                    onPressed: () {
                       Navigator.pushNamed(context, '/loginpage');
                     },
-                    child: Text("Login", style: TextStyle(color: Colors.blue.shade400,),),
-                    
+                    child: Text(
+                      "Login",
+                      style: TextStyle(color: Colors.blue.shade400),
                     ),
+                  ),
                 ],
               ),
             ],
