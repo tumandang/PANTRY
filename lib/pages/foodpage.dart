@@ -37,7 +37,7 @@ class _FoodPageState extends State<FoodPage> {
 
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(25.0),
+          padding:  EdgeInsets.all(25.0),
           child: Column(
             children: [
               Row(

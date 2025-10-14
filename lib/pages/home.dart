@@ -1,6 +1,6 @@
 import 'package:pantry/pages/Homepage.dart';
-import 'package:pantry/pages/borrow.dart';
-import 'package:pantry/pages/cart.dart';
+// import 'package:pantry/pages/borrow.dart';
+// import 'package:pantry/pages/cart.dart';
 import 'package:pantry/pages/donation.dart';
 import 'package:pantry/pages/foodpage.dart';
 import 'package:pantry/pages/profile.dart';
@@ -26,9 +26,9 @@ class _HomePageState extends State<HomePage> {
     HomeContentPage(),
     FoodPage(),
     ScanPage(),
-    BorrowPage(),
+    DonationPage(),
     ProfilePage(),
-    CartPage(),
+    
   ];
 
   @override
