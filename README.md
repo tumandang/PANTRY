@@ -27,6 +27,6 @@ Natural Language Processing (NLP) for chat understanding
 | Megat                 | Database & AI Integration        |
 | Danish                | Backend & AI Integration         |
 
-📜 License
+## 📜 License
 This project is for academic and non-commercial use under the MIT License.
 
