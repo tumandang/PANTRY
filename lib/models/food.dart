@@ -4,6 +4,7 @@ class Food {
   final String image;
   final int stock;
   final String category;
+  final String? barcode;
 
   Food({
     required this.id,
@@ -11,6 +12,7 @@ class Food {
     required this.image,
     required this.stock,
     required this.category,
+    this.barcode,
   });
 
 
@@ -24,6 +26,7 @@ class Food {
     image: "assets/img/roti.png",
     stock: 5,
     category: "Snack",
+    barcode: "9556231150096",
   ),
   Food(
     id: 2,
