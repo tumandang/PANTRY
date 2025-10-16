@@ -12,6 +12,19 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+        title: Text(
+          'Profile',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'CalSans'
+          ),
+        ),
+      ),
     backgroundColor: Theme.of(context).colorScheme.inverseSurface,
       body: ListView(
         
