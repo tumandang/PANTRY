@@ -1,18 +1,59 @@
 import 'package:pantry/models/cartmanager.dart';
 import 'package:flutter/material.dart';
+import 'package:pantry/models/food.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  List<Food> _foods = [];
+  bool isLoading = true;
+
+  void initState() {
+    super.initState();
+    fetchFoodFromWebsite();
+  }
+
+  Future<void> fetchFoodFromWebsite() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        setState(() {
+          _foods = data.map((item) => Food.fromJson(item)).toList();
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load food data');
+      }
+    } catch (e) {
+      print('Error fetching food: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.inverseSurface,
       appBar: AppBar(
-         backgroundColor: Theme.of(context).colorScheme.inverseSurface,
-        
+        backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+
         centerTitle: true,
         title: Text(
           'Cart',
@@ -27,18 +68,13 @@ class CartPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete_forever, color: Colors.red),
             onPressed: () {
-              Provider.of<Cartmanager>(
-                context,
-                listen: false,
-              ).clear();
+              Provider.of<Cartmanager>(context, listen: false).clear();
             },
           ),
         ],
       ),
       body: Consumer<Cartmanager>(
-        
         builder: (context, value, child) {
-          
           if (value.items.isEmpty) {
             return const Center(
               child: Text("Your cart is empty", style: TextStyle(fontSize: 18)),
@@ -59,27 +95,27 @@ class CartPage extends StatelessWidget {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: 
-                        
-                        ListTile(
-                          
-                          leading: Image.asset(item.imageUrl,width: 50,),
+                        child: ListTile(
+                          leading: Image.network(
+                            item.imageUrl,
+                            width: 50,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Icon(Icons.image_not_supported),
+                          ),
                           title: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(item.name,style:
-                              TextStyle(fontWeight: FontWeight.bold),
-                              
+                              Text(
+                                item.name,
+                                style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 15),
-                              
-                              
                             ],
-                            
                           ),
-                          
+
                           subtitle: Row(
-                             mainAxisSize: MainAxisSize.min,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
                                 width: 30,
@@ -89,38 +125,42 @@ class CartPage extends StatelessWidget {
                                   borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(7),
                                     bottomLeft: Radius.circular(7),
-                                  )
+                                  ),
                                 ),
-                                
+
                                 child: IconButton(
                                   padding: EdgeInsets.zero,
-                                   constraints: BoxConstraints(),
-                                  icon: Icon(Icons.remove,color: Colors.white,),
+                                  constraints: BoxConstraints(),
+                                  icon: Icon(Icons.remove, color: Colors.white),
                                   onPressed: () {
                                     Provider.of<Cartmanager>(
                                       context,
                                       listen: false,
-                                    ).updateQuantity(item.id, item.quantity - 1);
+                                    ).updateQuantity(
+                                      item.id,
+                                      item.quantity - 1,
+                                    );
                                   },
                                 ),
                               ),
-                              
+
                               Padding(
                                 padding: const EdgeInsets.all(0.0),
                                 child: Container(
                                   width: 30,
                                   height: 30,
-                                  alignment:Alignment.center ,
+                                  alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                    color: const Color.fromARGB(255, 0, 0, 0)
+                                    color: const Color.fromARGB(255, 0, 0, 0),
                                   ),
-                                  child: 
-                                
-                                 Text("${item.quantity}",
-                                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                                 )
-                                 
-                                 ),
+                                  child: Text(
+                                    "${item.quantity}",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
                               ),
 
                               Container(
@@ -131,23 +171,27 @@ class CartPage extends StatelessWidget {
                                   borderRadius: BorderRadius.only(
                                     topRight: Radius.circular(7),
                                     bottomRight: Radius.circular(7),
-                                  )
+                                  ),
                                 ),
                                 child: IconButton(
                                   padding: EdgeInsets.zero,
-                                   constraints: BoxConstraints(),
-                                  icon: Icon(Icons.add,color: Colors.white,size: 20,),
+                                  constraints: BoxConstraints(),
+                                  icon: Icon(
+                                    Icons.add,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
                                   onPressed: () {
                                     Provider.of<Cartmanager>(
                                       context,
                                       listen: false,
-                                    ).updateQuantity(item.id, item.quantity + 1);
+                                    ).updateQuantity(
+                                      item.id,
+                                      item.quantity + 1,
+                                    );
                                   },
                                 ),
                               ),
-
-
-                              
                             ],
                           ),
                           trailing: IconButton(
@@ -157,7 +201,6 @@ class CartPage extends StatelessWidget {
                               listen: false,
                             ).removeItem(item.id),
                           ),
-                          
                         ),
                       ),
                     );
@@ -203,10 +246,7 @@ class CartPage extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 2,
-                            ),
+                            border: Border.all(color: Colors.white, width: 2),
 
                             borderRadius: BorderRadius.circular(12),
                           ),

@@ -1,8 +1,13 @@
 import 'package:pantry/components/fooditem.dart';
 import 'package:pantry/models/food.dart';
+import 'package:pantry/components/homeitem.dart';
 import 'package:flutter/material.dart';
 import 'package:pantry/models/category.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
+import 'dart:convert';
+
 
 class HomeContentPage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -14,10 +19,41 @@ class HomeContentPage extends StatefulWidget {
 
 class _HomeContentPageState extends State<HomeContentPage> {
   int selectedIndex = 0;
+  List<Food> _foods = [];
+  bool isLoading = true;
+
+  void initState() {
+    super.initState();
+    fetchFoodFromWebsite();
+  }
+    Future<void> fetchFoodFromWebsite() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'), 
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        setState(() {
+          _foods = data.map((item) => Food.fromJson(item)).toList();
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load food data');
+      }
+    } catch (e) {
+      print('Error fetching food: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
 
   List<Food> get filteredFood {
-    if (selectedIndex == 0) return myFood;
-    return myFood
+    if (selectedIndex == 0) return _foods;
+    return _foods
         .where((f) => f.category == myCategory[selectedIndex].name)
         .toList();
   }
@@ -263,7 +299,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                         padding: index == 0
                             ? EdgeInsets.only(left: 10, right: 10)
                             : EdgeInsets.only(right: 10),
-                        child: Fooditem(FoodModel: filteredFood[index]),
+                        child: Homeitem(FoodModel: filteredFood[index]),
                       ),
                     ),
                   ],

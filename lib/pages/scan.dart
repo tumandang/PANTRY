@@ -4,6 +4,9 @@ import 'package:pantry/models/food.dart';
 import 'package:pantry/models/cartitem.dart';
 import 'package:pantry/models/cartmanager.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/dom.dart' as dom;
+import 'dart:convert';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
@@ -21,7 +24,36 @@ class _ScanPageState extends State<ScanPage> {
   int quantity = 1;
   bool isScanning = true;
   bool isFlashOn = false;
+  List<Food> _foods = [];
+  bool isLoading = true;
 
+  void initState() {
+    super.initState();
+    fetchFoodFromWebsite();
+  }
+    Future<void> fetchFoodFromWebsite() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'), 
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+
+        setState(() {
+          _foods = data.map((item) => Food.fromJson(item)).toList();
+          isLoading = false;
+        });
+      } else {
+        throw Exception('Failed to load food data');
+      }
+    } catch (e) {
+      print('Error fetching food: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,31 +206,29 @@ class _ScanPageState extends State<ScanPage> {
     print('Finding food for barcode: $barcode');
     
     // Cari food yang matching barcode
-    final foundFood = myFood.firstWhere(
-      (food) => food.barcode == barcode,
-      // Jika tak jumpa, return unknown product
-      orElse: () => Food(
-        id: 0, // ID 0 untuk unknown products
-        name: "Unknown Product",
-        image: "assets/img/unipantry_logo.png",
-        stock: 0,
-        category: "Unknown",
-        barcode: barcode,
-      ),
-    );
+    // final foundFood = _foods.firstWhere(
+    //   // Jika tak jumpa, return unknown product
+    //   orElse: () => Food(
+    //     id: 0, // ID 0 untuk unknown products
+    //     name: "Unknown Product",
+    //     image: "assets/img/unipantry_logo.png",
+    //     stock: 0,
+    //     category: "Unknown",
+    //   ),
+    // );
 
     // Update state dengan food yang ditemui
-    setState(() {
-      scannedFood = foundFood;
-      quantity = 1; // Reset quantity kepada 1 setiap kali scan baru
-    });
+    // setState(() {
+    //   scannedFood = foundFood;
+    //   quantity = 1; // Reset quantity kepada 1 setiap kali scan baru
+    // });
 
-    print('Food found: ${foundFood.name} (ID: ${foundFood.id})');
+    // print('Food found: ${foundFood.name} (ID: ${foundFood.id})');
 
-    // Jika item tidak available, show popup dan auto-resume
-    if (foundFood.id == 0) {
-      _showItemNotAvailablePopup();
-    }
+    // // Jika item tidak available, show popup dan auto-resume
+    // if (foundFood.id == 0) {
+    //   _showItemNotAvailablePopup();
+    // }
   }
 
   /// Function untuk show popup ketika item tidak available
@@ -342,10 +372,10 @@ class _ScanPageState extends State<ScanPage> {
                     
                     // Product Stock
                     Text(
-                      "Available Stock: ${scannedFood!.stock} pcs",
+                      "Available Stock: ${scannedFood!.quantity} pcs",
                       style: TextStyle(
                         fontSize: 14,
-                        color: scannedFood!.stock > 0 ? Colors.green : Colors.red,
+                        color: scannedFood!.quantity> 0 ? Colors.green : Colors.red,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -424,7 +454,7 @@ class _ScanPageState extends State<ScanPage> {
                         onPressed: () {
                           setState(() {
                             // Tambah quantity, maximum sampai stock available
-                            if (scannedFood!.stock == 0 || quantity < scannedFood!.stock) {
+                            if (scannedFood!.quantity == 0 || quantity < scannedFood!.quantity) {
                               quantity++;
                             }
                           });
@@ -450,7 +480,7 @@ class _ScanPageState extends State<ScanPage> {
                 name: scannedFood!.name,
                 category: scannedFood!.category,
                 quantity: quantity,
-                stock: scannedFood!.stock,
+                stock: scannedFood!.quantity,
                 imageUrl: scannedFood!.image,
               );
               
