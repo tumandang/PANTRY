@@ -1,4 +1,3 @@
-import 'package:pantry/components/fooditem.dart';
 import 'package:pantry/models/food.dart';
 import 'package:pantry/components/homeitem.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
 import 'dart:convert';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeContentPage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -21,15 +20,25 @@ class _HomeContentPageState extends State<HomeContentPage> {
   int selectedIndex = 0;
   List<Food> _foods = [];
   bool isLoading = true;
+  String? userName;
 
   void initState() {
     super.initState();
     fetchFoodFromWebsite();
+    loaduserdata();
   }
-    Future<void> fetchFoodFromWebsite() async {
+
+  Future<void> loaduserdata() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userName = prefs.getString('name') ?? 'User';
+    });
+  }
+
+  Future<void> fetchFoodFromWebsite() async {
     try {
       final response = await http.get(
-        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'), 
+        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'),
       );
 
       if (response.statusCode == 200) {
@@ -50,7 +59,6 @@ class _HomeContentPageState extends State<HomeContentPage> {
     }
   }
 
-
   List<Food> get filteredFood {
     if (selectedIndex == 0) return _foods;
     return _foods
@@ -67,6 +75,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.inverseSurface,
 
@@ -94,7 +103,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Hi, Hazriq 👋',
+                             'Hi, ${userName ?? "User"} ',
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -253,8 +262,8 @@ class _HomeContentPageState extends State<HomeContentPage> {
               ),
 
               SizedBox(height: 15),
-              
-               Container(
+
+              Container(
                 height: 100,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.tertiary,
@@ -263,9 +272,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ),
                 padding: EdgeInsets.all(12),
                 child: Center(child: Text('Banner')),
-                
               ),
-
 
               SizedBox(height: 15),
 

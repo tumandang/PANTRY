@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:pantry/components/Mybutton.dart';
 import 'package:pantry/components/squaretile.dart';
 import 'package:pantry/components/textfield.dart';
+import 'package:http/http.dart' as http;
+import 'package:html/dom.dart' as dom;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -10,6 +14,70 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final matrictid = TextEditingController();
     final password = TextEditingController();
+
+    Future<void> login() async {
+      final role = "student";
+      final url = Uri.parse(
+        'https://eduhosting.top/campusfoodpantry/api_login.php',
+      );
+
+      try {
+        final response = await http.post(
+          url,
+          headers: {"Accept": "application/json"},
+          body: {
+            'id': matrictid.text.trim(),
+            'password': password.text.trim(),
+            'role': role,
+          },
+        );
+
+        final data = jsonDecode(response.body);
+
+        if (data['success']) {
+          
+          
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //   SnackBar(
+          //     content: Text(
+          //       'Welcome ${data['data']['name']}',
+          //       style: TextStyle(
+          //         color: Colors.amber,
+          //         fontFamily: 'CalSans',
+          //         fontWeight: FontWeight.bold,
+          //       ),
+          //     ),
+          //   ),
+          // );
+          // await Future.delayed(const Duration(seconds: 1));
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('name', data['data']['name']);
+            await prefs.setString('id', data['data']['id']);
+            await prefs.setString('role', data['data']['role']);
+            Navigator.pushReplacementNamed(
+              context,
+              '/homepage',
+            );
+          
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                data['message'],
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e', style: TextStyle(color: Colors.red)),
+          ),
+        );
+      }
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -51,18 +119,14 @@ class LoginPage extends StatelessWidget {
                 hintText: "Password",
                 obscureText: true,
               ),
-              
+
               // forgot password
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
-                      
-                      onPressed: null,
-                      child: Text("Forgot Password"),
-                    ),
+                    TextButton(onPressed: null, child: Text("Forgot Password")),
                   ],
                 ),
               ),
@@ -70,7 +134,7 @@ class LoginPage extends StatelessWidget {
               //sign in button
               Mybutton(
                 onTap: () {
-                  Navigator.pushNamed(context, '/homepage');
+                  login();
                 },
               ),
               SizedBox(height: 25),
@@ -114,18 +178,16 @@ class LoginPage extends StatelessWidget {
                   SizedBox(width: 2),
                   TextButton(
                     style: TextButton.styleFrom(
-                      textStyle: TextStyle(
-                        
-                        fontWeight: FontWeight.bold,
-
-                      )
+                      textStyle: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onPressed:() {
+                    onPressed: () {
                       Navigator.pushNamed(context, '/registerpage');
                     },
-                    child: Text("Register", style: TextStyle(color: Colors.blue.shade400,),),
-                    
+                    child: Text(
+                      "Register",
+                      style: TextStyle(color: Colors.blue.shade400),
                     ),
+                  ),
                 ],
               ),
             ],
