@@ -10,7 +10,7 @@ class HelpPage extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inverseSurface,
         centerTitle: true,
         title: Text(
-          'Help & Support',
+          'Help & FAQ',
           style: TextStyle(
             color: Theme.of(context).colorScheme.inversePrimary,
             fontSize: 18,
@@ -116,9 +116,9 @@ class HelpPage extends StatelessWidget {
               'Get help from our team',
               Icons.support_agent,
               [
-                'Email: support@unipantry.edu',
-                'Campus Help Desk: Building A, Level 2',
-                'Phone: +60 3-1234 5678',
+                'Email: hazriqhaqimi47@gmail.com',
+                'Campus Help Desk: Pusat Aktiviti Pelajar (PAP) at level 1 beside Pusat Parcel',
+                'Phone: +60 11-2923 4038 (En. Danish Danial)',
                 'Response Time: 24-48 hours',
               ],
             ),
