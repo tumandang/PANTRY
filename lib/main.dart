@@ -7,34 +7,40 @@ import 'package:pantry/pages/chatbot.dart';
 import 'package:pantry/pages/donation.dart';
 import 'package:pantry/pages/foodpage.dart';
 import 'package:pantry/pages/home.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pantry/pages/profile.dart';
 import 'package:pantry/pages/scan.dart';
 import 'package:pantry/theme/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getString('id') != null;
   runApp(
+    
+
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => Themeprovider()),
         ChangeNotifierProvider(create: (context) => Cartmanager()),
       ],
-      child: const MyApp(),
+      child:  MyApp(islog: isLoggedIn,),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool islog;
+  const MyApp({super.key,required this.islog});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: islog ? HomePage() : LoginPage(),
       theme: Provider.of<Themeprovider>(context).themedata,
       routes: {
         '/loginpage':(context)=> LoginPage(),
