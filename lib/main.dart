@@ -6,6 +6,7 @@ import 'package:pantry/pages/cart.dart';
 import 'package:pantry/pages/chatbot.dart';
 import 'package:pantry/pages/donation.dart';
 import 'package:pantry/pages/foodpage.dart';
+import 'package:pantry/pages/helppage.dart';
 import 'package:pantry/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pantry/pages/profile.dart';
@@ -51,8 +52,9 @@ class MyApp extends StatelessWidget {
         '/scanpage' : (context) => ScanPage(),
         '/donationpage' : (context) => DonationPage(),
         '/borrowpage' : (context) => BorrowPage(),
-         '/cartpage': (context) => CartPage(),
-         '/chatbotpage' : (context) => ChatbotPage()
+        '/cartpage': (context) => CartPage(),
+        '/chatbotpage' : (context) => ChatbotPage(),
+        '/helppage' : (context) => HelpPage()
       },
     );
   }

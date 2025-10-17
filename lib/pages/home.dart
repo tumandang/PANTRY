@@ -94,11 +94,16 @@ class _HomePageState extends State<HomePage> {
             //Help AND FAQ
             ListTile(
               leading: Icon(Icons.help),
-              title: Text(' H E L P'),
+              title: Text(' H E L P  &  F A Q S'),
               titleTextStyle: TextStyle(
                 fontFamily: 'SpecialGhotic',
                 color: Colors.black,
               ),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.pushNamed(context, '/helppage');
+              },
             ),
 
             //About
