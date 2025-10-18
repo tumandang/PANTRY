@@ -6,12 +6,21 @@ import 'package:pantry/pages/foodpage.dart';
 import 'package:pantry/pages/profile.dart';
 import 'package:pantry/pages/scan.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
+}
+Future<void>logout(BuildContext context) async{
+  final prefs = await SharedPreferences.getInstance();
+
+  await prefs.clear();
+
+  Navigator.pushNamedAndRemoveUntil(context, '/loginpage', (route)=>false,);
 }
 
 class _HomePageState extends State<HomePage> {
@@ -124,6 +133,7 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'SpecialGhotic',
                 color: Colors.black,
               ),
+              onTap: () => logout(context),
             ),
           ],
         ),
