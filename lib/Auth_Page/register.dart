@@ -1,18 +1,95 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:pantry/components/Mybutton.dart';
 import 'package:pantry/components/squaretile.dart';
 import 'package:pantry/components/textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
     final matrictid = TextEditingController();
     final email = TextEditingController();
     final name = TextEditingController();
     final confirmPassword = TextEditingController();
     final password = TextEditingController();
+
+  Future<void> _register()async{
+      final role = "Student";
+      final url = Uri.parse('https://eduhosting.top/campusfoodpantry/api_register.php');
+
+      if (password.text != confirmPassword.text) {
+            ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                "Password Doesnot match",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+          return;
+        }
+      
+       
+
+      try {
+        final response = await http.post(
+          url,
+          headers: {"Content-Type": "application/json",
+            "Accept": "application/json"},
+          body:jsonEncode({
+            'name': name.text,
+            'id':matrictid.text,
+            'email': email.text,
+            'password': password.text.trim(),
+            'confirmPassword':confirmPassword.text.trim(),
+            'role':role
+          },) 
+        );
+
+        final data = jsonDecode(response.body);
+
+        if (data['success']) {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.setString('name', name.text);
+            await prefs.setString('id', matrictid.text);
+            await prefs.setString('role', 'Student');
+            await prefs.setString('email', email.text);
+            Navigator.pushReplacementNamed(
+              context,
+              '/homepage',
+            );
+          
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                data['message'],
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: $e', style: TextStyle(color: Colors.red)),
+          ),
+        );
+      }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -109,7 +186,7 @@ class RegisterPage extends StatelessWidget {
               //sign in button
               Mybutton(
                 onTap: () {
-                  Navigator.pushNamed(context, '/homepage');
+                  _register();
                 },
               ),
               SizedBox(height: 25),

@@ -54,6 +54,7 @@ class LoginPage extends StatelessWidget {
             await prefs.setString('name', data['data']['name']);
             await prefs.setString('id', data['data']['id']);
             await prefs.setString('role', data['data']['role']);
+            await prefs.setString('email', data['data']['email']);
             Navigator.pushReplacementNamed(
               context,
               '/homepage',

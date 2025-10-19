@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -17,11 +18,14 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   List<Food> _foods = [];
   bool isLoading = true;
+ 
 
   void initState() {
     super.initState();
     fetchFoodFromWebsite();
   }
+
+
 
   Future<void> fetchFoodFromWebsite() async {
     try {
@@ -46,6 +50,8 @@ class _CartPageState extends State<CartPage> {
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -227,7 +233,7 @@ class _CartPageState extends State<CartPage> {
                             style: TextStyle(color: Colors.white),
                           ),
                           Text(
-                            "${value.items.length} items with ",
+                            "${value.totalItems} ",
                             style: TextStyle(
                               fontFamily: 'SpecialGothic',
                               fontWeight: FontWeight.bold,
@@ -326,7 +332,56 @@ class CardDiaglog extends StatefulWidget {
 class _CardDiaglogState extends State<CardDiaglog> {
   TextEditingController _dateController = TextEditingController();
   TextEditingController _timeController = TextEditingController();
+   String? id;
 
+    Future<void> loaduserdata() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      id = prefs.getString('id') ?? 'User';
+    });
+  }
+    Future<void> postorder({
+    required String date,
+    required String time,
+    required List<Map<String, dynamic>> items,
+  }) async {
+    await loaduserdata();
+    try {
+      final response = await http.post(
+        Uri.parse('https://eduhosting.top/campusfoodpantry/api_order.php'),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: jsonEncode({
+          'studentID': id,
+          'date': date,
+          'time': time,
+          'items': items,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['success'] == true) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Order submitted successfully",style: TextStyle(color: Colors.red))),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(data['message'] ?? 'Order failed',style: TextStyle(color: Colors.red))),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Server error: ${response.statusCode}',style: TextStyle(color: Colors.red))),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e',style: TextStyle(color: Colors.red))));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -399,21 +454,15 @@ class _CardDiaglogState extends State<CardDiaglog> {
               },
             ),
             ElevatedButton.icon(
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text("Pls Check Order History"),
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    margin: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).size.height - 100,
-                      right: 20,
-                      left: 20,
-                    ),
-                  ),
-                );
+              onPressed: () async {
+                final cart = Provider.of<Cartmanager>(context, listen: false);
+                List<Map<String, dynamic>> items = cart.items.map((item) {
+                  return {'name': item.name, 'quantity': item.quantity};
+                }).toList();
+
+                await postorder(date: _dateController.text, time: _timeController.text, items: items);
+
+                Navigator.pop(context);
               },
 
               icon: Icon(Icons.published_with_changes_rounded),
@@ -452,8 +501,11 @@ class _CardDiaglogState extends State<CardDiaglog> {
       value,
     ) {
       if (value != null) {
+        final now = DateTime.now();
+        final dt = DateTime(now.year, now.month, now.day, value.hour, value.minute);
+        final formattedTime = DateFormat('HH:mm:ss').format(dt);
         setState(() {
-          _timeController.text = value.format(context);
+          _timeController.text =formattedTime;
         });
       }
     });
