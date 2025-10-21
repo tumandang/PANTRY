@@ -366,6 +366,8 @@ class _CardDiaglogState extends State<CardDiaglog> {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text("Order submitted successfully",style: TextStyle(color: Colors.red))),
           );
+           Provider.of<Cartmanager>(context, listen: false).clear();
+           Navigator.pushNamed(context, '/OrderHistory');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(data['message'] ?? 'Order failed',style: TextStyle(color: Colors.red))),
@@ -490,6 +492,12 @@ class _CardDiaglogState extends State<CardDiaglog> {
       lastDate: DateTime(2100),
     );
     if (_picked != null) {
+      if(_picked.isBefore(DateTime.now())){
+          ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("You can’t pick datebefore today",style: TextStyle(color: Colors.red),)),
+        );
+        return;
+      }
       setState(() {
         _dateController.text = DateFormat('yyyy-MM-dd').format(_picked);
       });
@@ -500,12 +508,33 @@ class _CardDiaglogState extends State<CardDiaglog> {
     showTimePicker(context: context, initialTime: TimeOfDay.now()).then((
       value,
     ) {
+
+      
       if (value != null) {
+        int toMinutes(TimeOfDay t) => t.hour * 60 + t.minute;
+        final picktime_min = toMinutes(value);
+        final restStart = toMinutes(const TimeOfDay(hour: 12, minute: 0));
+        final restEnd = toMinutes(const TimeOfDay(hour: 14, minute: 0));
+        final nightStart = toMinutes(const TimeOfDay(hour: 21, minute: 0));
+        final nightEnd = toMinutes(const TimeOfDay(hour: 08, minute: 0));
+        if (picktime_min >= restStart && picktime_min <= restEnd ){
+          ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("You can’t pick time during rest period",style: TextStyle(color: Colors.red),)),
+        );
+        return;
+        }
+        else if (picktime_min >= nightStart && picktime_min <= nightEnd){
+          ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("You can’t pick time during night period",style: TextStyle(color: Colors.red),)),
+        );
+        return;
+        }
         final now = DateTime.now();
         final dt = DateTime(now.year, now.month, now.day, value.hour, value.minute);
         final formattedTime = DateFormat('HH:mm:ss').format(dt);
+        
         setState(() {
-          _timeController.text =formattedTime;
+          _timeController.text = formattedTime;
         });
       }
     });
