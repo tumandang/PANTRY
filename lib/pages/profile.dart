@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -8,7 +9,22 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
+
 class _ProfilePageState extends State<ProfilePage> {
+   String ? name;
+   String ? email;
+    void initState() {
+    super.initState();
+    loaduserdata();
+  }
+
+  Future<void> loaduserdata() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+     name = prefs.getString('name') ?? 'User';
+     email =prefs.getString('email')?? 'EmailUser@gmail.com';
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,15 +59,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               SizedBox(height: 10),
               Text(
-                "Student's Name",
+                '${name}',
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                "student1234@d8938.com"
-
+                '${email}'
               ),
 
             ],
@@ -69,6 +84,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 leading: Icon(subtab.icon),
                 title: Text(subtab.title),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onTap: () {
+                  if (subtab.title == "Order History"){
+                    Navigator.pushNamed(context, '/OrderHistory');
+                  }
+                },
+              
 
 
               ),
@@ -93,7 +114,7 @@ class CustomListTile {
 }
 
 List <CustomListTile> ListTileItems =[
-  CustomListTile(icon: Icons.history ,title: "Order History"),
+  CustomListTile(icon: Icons.history ,title: "Order History",),
   CustomListTile(icon: Icons.handshake ,title: "Donation Summary"),
   CustomListTile(icon: Icons.settings ,title: "Settings"),
   CustomListTile(icon: Icons.logout ,title: "Log-Out"),
