@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
   final List _pages = [
     HomeContentPage(),
     FoodPage(),
-    ScanPage(),
+    QRScanPage(),
     DonationPage(),
     ProfilePage(),
     
