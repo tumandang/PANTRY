@@ -5,6 +5,7 @@ import 'package:pantry/models/category.dart';
 import 'package:http/http.dart' as http;
 import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
+import 'package:pantry/models/popularfood.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,7 +19,7 @@ class HomeContentPage extends StatefulWidget {
 
 class _HomeContentPageState extends State<HomeContentPage> {
   int selectedIndex = 0;
-  List<Food> _foods = [];
+  List<PopularFood> _foods = [];
   bool isLoading = true;
   String? userName;
 
@@ -38,16 +39,32 @@ class _HomeContentPageState extends State<HomeContentPage> {
   Future<void> fetchFoodFromWebsite() async {
     try {
       final response = await http.get(
-        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'),
+        Uri.parse(
+          'https://eduhosting.top/campusfoodpantry/api_popular_food.php',
+        ),
       );
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(response.body);
+        final Map<String, dynamic> jsonResponse = json.decode(response.body);
 
-        setState(() {
-          _foods = data.map((item) => Food.fromJson(item)).toList();
-          isLoading = false;
-        });
+        print("Raw API data: $jsonResponse");
+
+        if (jsonResponse['success'] == true &&
+            jsonResponse['popular_foods'] != null) {
+          final List<dynamic> data = jsonResponse['popular_foods'];
+
+          setState(() {
+            _foods = data.map((item) => PopularFood.fromJson(item)).toList();
+            isLoading = false;
+          });
+
+          print("Loaded foods: ${_foods.length}");
+        } else {
+          print("No foods found or success=false");
+          setState(() {
+            isLoading = false;
+          });
+        }
       } else {
         throw Exception('Failed to load food data');
       }
@@ -59,23 +76,8 @@ class _HomeContentPageState extends State<HomeContentPage> {
     }
   }
 
-  List<Food> get filteredFood {
-    if (selectedIndex == 0) return _foods;
-    return _foods
-        .where((f) => f.category == myCategory[selectedIndex].name)
-        .toList();
-  }
-
-  String category = '';
-  void filtercategory(String categoryselect) {
-    setState(() {
-      category = categoryselect;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.inverseSurface,
 
@@ -103,7 +105,7 @@ class _HomeContentPageState extends State<HomeContentPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                             'Hi, ${userName ?? "User"} ',
+                            'Hi, ${userName ?? "User"} ',
                             style: TextStyle(
                               color: Theme.of(
                                 context,
@@ -147,119 +149,122 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ],
               ),
 
-              SizedBox(height: 20),
+              // SizedBox(height: 20),
 
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
-                ),
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.inversePrimary,
-                    ),
-                    SizedBox(width: 10),
-                    Text(
-                      'Seacrh',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
+              // Container(
+              //   decoration: BoxDecoration(
+              //     color: Theme.of(context).colorScheme.surface,
+              //     borderRadius: BorderRadius.circular(12),
+              //     border: Border.all(color: Colors.grey.shade300, width: 1.5),
+              //   ),
+              //   padding: EdgeInsets.all(12),
+              //   child: Row(
+              //     children: [
+              //       Icon(
+              //         Icons.search,
+              //         color: Theme.of(context).colorScheme.inversePrimary,
+              //       ),
+              //       SizedBox(width: 10),
+              //       Text(
+              //         'Seacrh',
+              //         style: TextStyle(
+              //           color: Theme.of(context).colorScheme.primary,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(height: 15),
 
-              // Text(
-              //           'No Student Eats Alone.',
-              //           style: TextStyle(
-              //             color: Colors.white,
-              //             fontFamily: 'SpecialGhotic',
-              //             fontSize: 25,
-              //             fontWeight: FontWeight.bold
-              //           ),
-              //         ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: List.generate(
-                      myCategory.length,
-                      (index) => Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedIndex = index;
-                            });
-                          },
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 200),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              gradient: selectedIndex == index
-                                  ? const LinearGradient(
-                                      colors: [Color(0xFFFFC107), Colors.white],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    )
-                                  : const LinearGradient(
-                                      colors: [Colors.white, Colors.white],
-                                    ),
-                              borderRadius: BorderRadius.circular(7),
-                              border: Border.all(
-                                color: selectedIndex == index
-                                    ? Colors.amber.shade700
-                                    : Colors.grey.shade300,
-                                width: selectedIndex == index ? 2 : 1,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade400,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Image.asset(
-                                  myCategory[index].image,
-                                  width: 25,
-                                  height: 25,
-                                  fit: BoxFit.contain,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  myCategory[index].name,
-                                  style: TextStyle(
-                                    color: selectedIndex == index
-                                        ? Colors.black
-                                        : Colors.grey.shade800,
-                                    fontFamily: 'CalSans',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                          'No Student Eats Alone.',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'SpecialGhotic',
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
               ),
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Padding(
+              //     padding: const EdgeInsets.symmetric(horizontal: 16),
+              //     child: Row(
+              //       children: List.generate(
+              //         myCategory.length,
+              //         (index) => Padding(
+              //           padding: const EdgeInsets.only(right: 10),
+              //           child: GestureDetector(
+              //             onTap: () {
+              //               setState(() {
+              //                 selectedIndex = index;
+              //               });
+              //             },
+              //             child: AnimatedContainer(
+              //               duration: const Duration(milliseconds: 200),
+              //               padding: const EdgeInsets.symmetric(
+              //                 horizontal: 12,
+              //                 vertical: 8,
+              //               ),
+              //               decoration: BoxDecoration(
+              //                 gradient: selectedIndex == index
+              //                     ? const LinearGradient(
+              //                         colors: [Color(0xFFFFC107), Colors.white],
+              //                         begin: Alignment.topLeft,
+              //                         end: Alignment.bottomRight,
+              //                       )
+              //                     : const LinearGradient(
+              //                         colors: [Colors.white, Colors.white],
+              //                       ),
+              //                 borderRadius: BorderRadius.circular(7),
+              //                 border: Border.all(
+              //                   color: selectedIndex == index
+              //                       ? Colors.amber.shade700
+              //                       : Colors.grey.shade300,
+              //                   width: selectedIndex == index ? 2 : 1,
+              //                 ),
+              //                 boxShadow: [
+              //                   BoxShadow(
+              //                     color: Colors.grey.shade400,
+              //                     blurRadius: 5,
+              //                     offset: const Offset(0, 2),
+              //                   ),
+              //                 ],
+              //               ),
+              //               child: Row(
+              //                 mainAxisSize: MainAxisSize.min,
+              //                 children: [
+              //                   Image.asset(
+              //                     myCategory[index].image,
+              //                     width: 25,
+              //                     height: 25,
+              //                     fit: BoxFit.contain,
+              //                   ),
+              //                   const SizedBox(width: 8),
+              //                   Text(
+              //                     myCategory[index].name,
+              //                     style: TextStyle(
+              //                       color: selectedIndex == index
+              //                           ? Colors.black
+              //                           : Colors.grey.shade800,
+              //                       fontFamily: 'CalSans',
+              //                       fontWeight: FontWeight.w600,
+              //                       fontSize: 14,
+              //                     ),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
               SizedBox(height: 15),
 
@@ -295,23 +300,33 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ),
               ),
               SizedBox(height: 15),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                physics: BouncingScrollPhysics(),
-                child: Row(
-                  children: [
-                    ...List.generate(
-                      filteredFood.length,
-                      (index) => Padding(
-                        padding: index == 0
-                            ? EdgeInsets.only(left: 10, right: 10)
-                            : EdgeInsets.only(right: 10),
-                        child: Homeitem(FoodModel: filteredFood[index]),
+              if (isLoading)
+                Center(child: CircularProgressIndicator(color: Colors.amber))
+              else if (_foods.isEmpty)
+                Center(
+                  child: Text(
+                    "No top pickup items available",
+                    style: TextStyle(color: Colors.white70),
+                  ),
+                )
+              else
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: BouncingScrollPhysics(),
+                  child: Row(
+                    children: [
+                      ...List.generate(
+                        _foods.length,
+                        (index) => Padding(
+                          padding: index == 0
+                              ? EdgeInsets.only(left: 10, right: 10)
+                              : EdgeInsets.only(right: 10),
+                          child: Homeitem(FoodModel: _foods[index]),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
             ],
           ),
         ),

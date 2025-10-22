@@ -1,5 +1,7 @@
 import 'package:pantry/Auth_Page/login.dart';
 import 'package:pantry/Auth_Page/register.dart';
+import 'package:pantry/QR-way/QRProduct.dart';
+import 'package:pantry/QR-way/cartQr.dart';
 import 'package:pantry/models/cartmanager.dart';
 import 'package:pantry/pages/borrow.dart';
 import 'package:pantry/pages/cart.dart';
@@ -50,13 +52,15 @@ class MyApp extends StatelessWidget {
         '/homepage': (context) => HomePage(),
         '/foodpage': (context) => FoodPage(),
         '/profilepage': (context) => ProfilePage(),
-        '/scanpage' : (context) => ScanPage(),
+        '/scanpage' : (context) => QRScanPage(),
         '/donationpage' : (context) => DonationPage(),
         '/borrowpage' : (context) => BorrowPage(),
         '/cartpage': (context) => CartPage(),
         '/chatbotpage' : (context) => ChatbotPage(),
         '/helppage' : (context) => HelpPage(),
         '/OrderHistory':(context)=> OrderHistoryPage(),
+        '/ProductQr':(context) => Qrproduct(),
+        '/CartQR':(context)=>CartQRPage(),
       },
     );
   }

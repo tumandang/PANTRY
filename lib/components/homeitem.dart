@@ -1,11 +1,12 @@
 import 'package:pantry/models/cartitem.dart';
 import 'package:pantry/models/cartmanager.dart';
-import 'package:pantry/models/food.dart';
+
 import 'package:flutter/material.dart';
+import 'package:pantry/models/popularfood.dart';
 import 'package:provider/provider.dart';
 
 class Homeitem extends StatelessWidget {
-  final Food FoodModel;
+  final PopularFood FoodModel;
   const Homeitem({super.key, required this.FoodModel});
 
   @override
@@ -35,11 +36,8 @@ class Homeitem extends StatelessWidget {
               child: Image.network(
                 FoodModel.image,
                 fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) => Icon(
-                  Icons.broken_image,
-                  size: 50,
-                  color: Colors.grey,
-                ),
+                errorBuilder: (context, error, stackTrace) =>
+                    Icon(Icons.broken_image, size: 50, color: Colors.grey),
               ),
             ),
 
@@ -62,7 +60,7 @@ class Homeitem extends StatelessWidget {
 
             // STOCK
             Text(
-              "${FoodModel.quantity} pcs",
+              "${FoodModel.count} orders",
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
@@ -78,29 +76,25 @@ class Homeitem extends StatelessWidget {
                 final foodtaken = CartItem(
                   id: FoodModel.id,
                   name: FoodModel.name,
-                  category: FoodModel.category,
+                  category:
+                      'Top Pickup', 
                   quantity: 1,
-                  stock: (FoodModel.quantity > 0)
-                      ? FoodModel.quantity - 1
-                      : 0,
+                  stock: FoodModel
+                      .count, 
                   imageUrl: FoodModel.image,
                 );
 
-                Provider.of<Cartmanager>(context, listen: false)
-                    .additem(foodtaken);
+                Provider.of<Cartmanager>(
+                  context,
+                  listen: false,
+                ).additem(foodtaken);
               },
               icon: const Icon(Icons.add_shopping_cart_sharp, size: 18),
-              label: const Text(
-                "Add",
-                style: TextStyle(fontSize: 12),
-              ),
+              label: const Text("Add", style: TextStyle(fontSize: 12)),
               style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    Theme.of(context).colorScheme.inversePrimary,
-                foregroundColor:
-                    Theme.of(context).colorScheme.surface,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                foregroundColor: Theme.of(context).colorScheme.surface,
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
