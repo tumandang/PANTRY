@@ -215,7 +215,7 @@ class _DonationPageState extends State<DonationPage> {
                 );
               }
               final response = await request.send();
-              final respStr = await response.stream.bytesToString();
+              // final respStr = await response.stream.bytesToString();
 
               if (response.statusCode == 200) {
                 ScaffoldMessenger.of(context).showSnackBar(
