@@ -1,9 +1,6 @@
-import 'package:pantry/models/food.dart';
 import 'package:pantry/components/homeitem.dart';
 import 'package:flutter/material.dart';
-import 'package:pantry/models/category.dart';
 import 'package:http/http.dart' as http;
-import 'package:html/dom.dart' as dom;
 import 'package:intl/intl.dart';
 import 'package:pantry/models/popularfood.dart';
 import 'dart:convert';
@@ -176,19 +173,19 @@ class _HomeContentPageState extends State<HomeContentPage> {
               // ),
               SizedBox(height: 15),
 
-              Container(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                          'No Student Eats Alone.',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: 'SpecialGhotic',
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            
-                          ),
-                        ),
-              ),
+              // Container(
+              //   alignment: Alignment.centerLeft,
+              //   child: Text(
+              //     'No Student Eats Alone.',
+              //     style: TextStyle(
+              //       color: Colors.black,
+              //       fontFamily: 'SpecialGhotic',
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.bold,
+              //     ),
+              //   ),
+              // ),
+
               // SingleChildScrollView(
               //   scrollDirection: Axis.horizontal,
               //   child: Padding(
@@ -265,18 +262,26 @@ class _HomeContentPageState extends State<HomeContentPage> {
               //     ),
               //   ),
               // ),
-
-              SizedBox(height: 15),
-
               Container(
-                height: 100,
+                height: 150,
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
+                  image: DecorationImage(
+                    image: AssetImage('assets/img/banner-1.jpg'),
+                    fit: BoxFit.fill,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withValues(alpha: 0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                  color: Colors.transparent,
                   borderRadius: BorderRadius.circular(7),
-                  border: Border.all(color: Colors.grey.shade300, width: 1.5),
+                  border: Border.all(color: Colors.grey.shade400, width: 1.5),
                 ),
                 padding: EdgeInsets.all(12),
-                child: Center(child: Text('Banner')),
               ),
 
               SizedBox(height: 15),

@@ -32,7 +32,7 @@ class Homeitem extends StatelessWidget {
           children: [
             // IMAGE
             AspectRatio(
-              aspectRatio: 1,
+              aspectRatio: 16 / 9,
               child: Image.network(
                 FoodModel.image,
                 fit: BoxFit.contain,

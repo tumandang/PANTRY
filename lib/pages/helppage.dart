@@ -153,7 +153,7 @@ class HelpPage extends StatelessWidget {
                   _buildGuideItem(
                     context,
                     'How to donate food items',
-                    '1. Go to Donation page\n2. Tap "Add Donation"\n3. Fill item details\n4. Submit for review\n5. Receive confirmation',
+                    '1. Go to Donation page\n2. Tap "Choose the type of donation"\n3. Fill item details\n4. Submit for donation\n',
                   ),
                   _buildGuideItem(
                     context,
@@ -163,13 +163,9 @@ class HelpPage extends StatelessWidget {
                   _buildGuideItem(
                     context,
                     'Using the scan feature',
-                    '1. Tap camera icon\n2. Scan item barcode\n3. View item details\n4. Add to cart if available',
+                    '1. Tap camera icon\n2. Scan the pantry QR Code\n3. View list of items\n4. Add to cart if available',
                   ),
-                  _buildGuideItem(
-                    context,
-                    'Managing your profile',
-                    '1. Open navigation drawer\n2. Tap "Profile"\n3. Edit information\n4. Save changes',
-                  ),
+
                 ],
               ),
             ),

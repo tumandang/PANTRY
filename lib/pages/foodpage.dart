@@ -8,10 +8,8 @@ import 'package:html/dom.dart' as dom;
 import '../models/food.dart';
 
 class FoodPage extends StatefulWidget {
-
   FoodPage({super.key});
 
-  
   @override
   State<FoodPage> createState() => _FoodPageState();
 }
@@ -20,15 +18,18 @@ class _FoodPageState extends State<FoodPage> {
   int selectedIndex = 0;
   List<Food> _foods = [];
   bool isLoading = true;
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = '';
 
   void initState() {
     super.initState();
     fetchFoodFromWebsite();
   }
-    Future<void> fetchFoodFromWebsite() async {
+
+  Future<void> fetchFoodFromWebsite() async {
     try {
       final response = await http.get(
-        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'), 
+        Uri.parse('https://eduhosting.top/campusfoodpantry/get_food.php'),
       );
 
       if (response.statusCode == 200) {
@@ -49,11 +50,17 @@ class _FoodPageState extends State<FoodPage> {
     }
   }
 
-
   List<Food> get filteredFood {
-    if (selectedIndex == 0) return _foods;
-    return _foods
-        .where((f) => f.category == myCategory[selectedIndex].name)
+    List<Food> categoryFiltered = selectedIndex == 0
+        ? _foods
+        : _foods
+              .where((f) => f.category == myCategory[selectedIndex].name)
+              .toList();
+
+    if (searchQuery.isEmpty) return categoryFiltered;
+
+    return categoryFiltered
+        .where((f) => f.name.toLowerCase().contains(searchQuery.toLowerCase()))
         .toList();
   }
 
@@ -64,11 +71,7 @@ class _FoodPageState extends State<FoodPage> {
     });
   }
 
-
-
-//post API
-    
-
+  //post API
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +80,7 @@ class _FoodPageState extends State<FoodPage> {
 
       body: SafeArea(
         child: Padding(
-          padding:  EdgeInsets.all(25.0),
+          padding: EdgeInsets.all(25.0),
           child: Column(
             children: [
               Row(
@@ -87,16 +90,16 @@ class _FoodPageState extends State<FoodPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hi Hazriq!',
+                        'Together Against Hunger.',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.inversePrimary,
                           fontFamily: 'SpecialGhotic',
-                          fontSize: 24,
+                          fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        '21 Dec 2024',
+                        '~Brain.Freeze(); Team',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                         ),
@@ -127,28 +130,27 @@ class _FoodPageState extends State<FoodPage> {
 
               SizedBox(height: 20),
 
-              Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: EdgeInsets.all(12),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    Text(
-                      'Seacrh',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                  ],
+              TextField(
+                controller: searchController,
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search food...',
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).colorScheme.surface,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
               ),
-
               SizedBox(height: 12),
 
               // Text(
@@ -169,7 +171,7 @@ class _FoodPageState extends State<FoodPage> {
                     Text(
                       'Search by Category',
                       style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 15,
                         fontWeight: FontWeight.normal,
                         color: Theme.of(context).colorScheme.inversePrimary,
                         fontFamily: 'SpecialGhotic',
@@ -282,7 +284,7 @@ class _FoodPageState extends State<FoodPage> {
               Expanded(
                 child: GridView.builder(
                   shrinkWrap: true,
-                  
+
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 0.75,
@@ -319,5 +321,3 @@ class _FoodPageState extends State<FoodPage> {
     );
   }
 }
-
-
