@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:pantry/models/MessageAI.dart';
 
 class ChatbotPage extends StatefulWidget {
@@ -10,12 +12,47 @@ class ChatbotPage extends StatefulWidget {
 
 class _ChatbotPageState extends State<ChatbotPage> {
   final TextEditingController _controller = TextEditingController();
-  final List<Messageai> mymessage = [
-    Messageai(message: "HAI APA KHABAR", IsUser: true),
-    Messageai(message: "SAYA ROBOT", IsUser: false),
-    Messageai(message: "Okay", IsUser: true),
-    Messageai(message: "Saya Robot", IsUser: true),
-  ];
+  final List<Messageai> mymessage = [];
+  bool _isLoading = false;
+
+  Future<void> sendMessage() async {
+    final userText = _controller.text.trim();
+    if (userText.isEmpty) return;
+
+    setState(() {
+      mymessage.add(Messageai(message: userText, IsUser: true));
+      _controller.clear();
+      _isLoading = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse("https://eduhosting.top/campusfoodpantry/chatbot.php"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"message": userText}),
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final reply = data["reply"] ?? "Sorry, I didn’t get that.";
+
+        setState(() {
+          mymessage.add(Messageai(message: reply, IsUser: false));
+        });
+      } else {
+        setState(() {
+          mymessage.add(Messageai(message: "Server error: ${response.statusCode}", IsUser: false));
+        });
+      }
+    } catch (e) {
+      setState(() {
+        mymessage.add(Messageai(message: "Error: $e", IsUser: false));
+      });
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +60,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         centerTitle: true,
         leading: IconButton(
-          icon : Icon(Icons.arrow_back_ios_rounded),
+          icon: Icon(Icons.arrow_back_ios_rounded),
           color: Colors.amber,
-          onPressed:()=> Navigator.of(context).pop()
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text.rich(
           TextSpan(
@@ -39,20 +76,6 @@ class _ChatbotPageState extends State<ChatbotPage> {
             ],
           ),
         ),
-
-        actions: [
-          Padding(padding: EdgeInsets.all(12)),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white10,
-              borderRadius: BorderRadius.circular(100),
-            ),
-            child: IconButton(
-              icon: Icon(Icons.info_outline, color: Colors.white),
-              onPressed: () {},
-            ),
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -89,7 +112,9 @@ class _ChatbotPageState extends State<ChatbotPage> {
                         child: Text(
                           message.message,
                           style: TextStyle(
-                            color: message.IsUser ? Colors.white : Colors.black, fontWeight: FontWeight.bold
+                            color:
+                                message.IsUser ? Colors.white : Colors.black,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
@@ -98,14 +123,14 @@ class _ChatbotPageState extends State<ChatbotPage> {
                 },
               ),
             ),
-            // user input
+            if (_isLoading)
+              const Padding(
+                padding: EdgeInsets.all(8),
+                child: CircularProgressIndicator(),
+              ),
             Padding(
               padding: const EdgeInsets.only(
-                bottom: 32,
-                top: 16,
-                right: 16,
-                left: 16,
-              ),
+                  bottom: 32, top: 16, right: 16, left: 16),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -125,19 +150,21 @@ class _ChatbotPageState extends State<ChatbotPage> {
                       child: TextField(
                         controller: _controller,
                         decoration: InputDecoration(
-                          hintText: "Write Your Message",
+                          hintText: "Write your message...",
                           border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 20),
                         ),
                       ),
                     ),
-        
-                    IconButton(onPressed: () {}, icon: Icon(Icons.send)),
+                    IconButton(
+                      onPressed: sendMessage,
+                      icon: Icon(Icons.send, color: Colors.amber),
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(width: 8),
           ],
         ),
       ),
