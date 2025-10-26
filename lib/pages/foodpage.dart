@@ -29,14 +29,19 @@ class _FoodPageState extends State<FoodPage> {
   }
 
   Future<List<double>> getEmbedding(String text) async {
-    final apiKey = dotenv.env['OPENAI_API_KEY']!;
+    // final apiKey = dotenv.env['OPENAI_API_KEY']!;
+    // final response = await http.post(
+    //   Uri.parse("https://api.openai.com/v1/embeddings"),
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Authorization": "Bearer $apiKey",
+    //   },
+    //   body: jsonEncode({"model": "text-embedding-3-small", "input": text}),
+    // );
     final response = await http.post(
-      Uri.parse("https://api.openai.com/v1/embeddings"),
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer $apiKey",
-      },
-      body: jsonEncode({"model": "text-embedding-3-small", "input": text}),
+      Uri.parse("https://eduhosting.top/campusfoodpantry/smart_search.php"),
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({"text": text}),
     );
 
     final data = json.decode(response.body);
