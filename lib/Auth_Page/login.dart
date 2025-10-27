@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pantry/components/Mybutton.dart';
-import 'package:pantry/components/squaretile.dart';
+// import 'package:pantry/components/squaretile.dart';
 import 'package:pantry/components/textfield.dart';
 import 'package:http/http.dart' as http;
 
@@ -149,10 +149,10 @@ class LoginPage extends StatelessWidget {
                       Expanded(
                         child: Divider(thickness: 0.5, color: Colors.grey[400]),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text("Or Continue With"),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      //   child: Text("Or Continue With"),
+                      // ),
                       Expanded(
                         child: Divider(thickness: 0.5, color: Colors.grey[400]),
                       ),
@@ -161,14 +161,14 @@ class LoginPage extends StatelessWidget {
                 ),
                 SizedBox(height: 25),
           
-                // Huawei
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Squaretile(imagepath: 'assets/img/Huawei-Logo-2006.png'),
-                  ],
-                ),
-                SizedBox(height: 15),
+                // // Huawei
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Squaretile(imagepath: 'assets/img/Huawei-Logo-2006.png'),
+                //   ],
+                // ),
+                // SizedBox(height: 15),
           
                 // first time here?
                 Row(
