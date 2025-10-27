@@ -29,7 +29,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                "Password Doesnot match",
+                "Password Does not match",
                 style: TextStyle(color: Colors.red),
               ),
             ),
@@ -200,10 +200,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       Expanded(
                         child: Divider(thickness: 0.5, color: Colors.grey[400]),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text("Or Continue With"),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      //   child: Text("Or Continue With"),
+                      // ),
                       Expanded(
                         child: Divider(thickness: 0.5, color: Colors.grey[400]),
                       ),
@@ -212,16 +212,16 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 SizedBox(height: 25),
           
-                //Google  + Huawei
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Squaretile(imagepath: 'assets/img/google_icon.png'),
-                    SizedBox(width: 25),
-                    Squaretile(imagepath: 'assets/img/Huawei-Logo-2006.png'),
-                  ],
-                ),
-                SizedBox(height: 15),
+                // //Google  + Huawei
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Squaretile(imagepath: 'assets/img/google_icon.png'),
+                //     SizedBox(width: 25),
+                //     Squaretile(imagepath: 'assets/img/Huawei-Logo-2006.png'),
+                //   ],
+                // ),
+                // SizedBox(height: 15),
           
                 // first time here?
                 Row(

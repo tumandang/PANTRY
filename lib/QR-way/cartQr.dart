@@ -267,7 +267,7 @@ class _CartQRPageState extends State<CartQRPage> {
                                 color: Colors.white,
                               ),
                               Text(
-                                'Order Now',
+                                'Pickup Now',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontFamily: 'CalSans',
@@ -320,8 +320,7 @@ class _ConfirmationModalState extends State<ConfirmationModal> {
       }
 
       
-      final date = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      final time = DateFormat('HH:mm:ss').format(DateTime.now());
+
 
       
       final cart = Provider.of<Cartmanager>(context, listen: false);
@@ -339,14 +338,14 @@ class _ConfirmationModalState extends State<ConfirmationModal> {
       final data = jsonDecode(response.body);
       if (data['success'] == true) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Order recorded successfully!")),
+          SnackBar(content: Text("Pick-Up order recorded successfully!")),
         );
 
         cart.clear(); // clear cart after success
         Navigator.pushNamed(context, '/OrderHistory');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(data['message'] ?? 'Order failed')),
+          SnackBar(content: Text(data['message'] ?? 'Pickup failed')),
         );
       }
     } catch (e) {

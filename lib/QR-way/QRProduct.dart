@@ -4,7 +4,6 @@ import 'package:pantry/components/fooditem.dart';
 import 'package:pantry/models/category.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:html/dom.dart' as dom;
 import '../models/food.dart';
 
 class Qrproduct extends StatefulWidget {
@@ -87,11 +86,11 @@ class _QrProductState extends State<Qrproduct> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Hi Hazriq!',
+                        'Walk-In and Pick-Up',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.inversePrimary,
                           fontFamily: 'SpecialGhotic',
-                          fontSize: 24,
+                          fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
