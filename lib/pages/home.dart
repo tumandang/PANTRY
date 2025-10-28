@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Theme.of(context).colorScheme.inverseSurface,
         centerTitle: true,
         title: Text(
-          'Unipantry',
+          'CampusPantry',
           style: TextStyle(
             color: Theme.of(context).colorScheme.inversePrimary,
             fontSize: 18,
@@ -119,11 +119,16 @@ class _HomePageState extends State<HomePage> {
             //About
             ListTile(
               leading: Icon(Icons.info_outline_rounded),
-              title: Text('A B O U T'),
+              title: Text('P R I V A C Y  P O L I C Y'),
               titleTextStyle: TextStyle(
                 fontFamily: 'SpecialGhotic',
                 color: Colors.black,
               ),
+              onTap: () {
+                Navigator.pop(context);
+
+                Navigator.pushNamed(context, '/privacypolicy');
+              },
             ),
 
             //Logout

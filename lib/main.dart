@@ -11,7 +11,8 @@ import 'package:pantry/pages/foodpage.dart';
 import 'package:pantry/pages/helppage.dart';
 import 'package:pantry/pages/home.dart';
 import 'package:pantry/pages/order.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pantry/pages/privacy.dart';
+import 'package:pantry/splash_screen.dart';
 import 'package:pantry/pages/profile.dart';
 import 'package:pantry/pages/scan.dart';
 import 'package:pantry/theme/themeprovider.dart';
@@ -20,8 +21,7 @@ import 'package:provider/provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  final prefs = await SharedPreferences.getInstance();
-  final isLoggedIn = prefs.getString('id') != null;
+
   runApp(
     
 
@@ -30,21 +30,21 @@ void main() async{
         ChangeNotifierProvider(create: (context) => Themeprovider()),
         ChangeNotifierProvider(create: (context) => Cartmanager()),
       ],
-      child:  MyApp(islog: isLoggedIn,),
+      child:  MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final bool islog;
-  const MyApp({super.key,required this.islog});
+  
+  const MyApp({super.key});
 
-  // This widget is the root of your application.
+  
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: islog ? HomePage() : LoginPage(),
+      home: SplashScreen(),
       theme: Provider.of<Themeprovider>(context).themedata,
       routes: {
         '/loginpage':(context)=> LoginPage(),
@@ -61,6 +61,7 @@ class MyApp extends StatelessWidget {
         '/OrderHistory':(context)=> OrderHistoryPage(),
         '/ProductQr':(context) => Qrproduct(),
         '/CartQR':(context)=>CartQRPage(),
+        '/privacypolicy':(context)=> PrivacyPolicyPage(),
       },
     );
   }

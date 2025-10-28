@@ -336,7 +336,7 @@ class _DonationPageState extends State<DonationPage> {
                   controller: ammount,
                   hintText: "50",
                   obscureText: false,
-                  label: 'Ammount',
+                  label: 'Amount',
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

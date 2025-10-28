@@ -85,10 +85,10 @@ class _FoodPageState extends State<FoodPage> {
       "bread": ["gardenia", "bun"],
     };
 
-    // If user types a keyword we know → replace it
+    
     for (var key in keywordMap.keys) {
       if (query.contains(key)) {
-        // Join all mapped words as one combined search string
+      
         return keywordMap[key]!.join(" ");
       }
     }
@@ -223,10 +223,10 @@ class _FoodPageState extends State<FoodPage> {
                       onChanged: (value) {
                         searchQuery = value;
 
-                        // Cancel any previous timer
+                       
                         if (_debounce?.isActive ?? false) _debounce!.cancel();
 
-                        // Start new timer
+                      
                         _debounce = Timer(
                           const Duration(milliseconds: 500),
                           () async {

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pantry/models/food.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
+
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -324,7 +324,7 @@ class _ConfirmationModalState extends State<ConfirmationModal> {
 
       
       final cart = Provider.of<Cartmanager>(context, listen: false);
-      final items = cart.items.map((e) => e.name).join(', ');
+      final items = cart.items.map((e) => '${e.name} (${e.quantity})').join(', ');
 
       
       final response = await http.post(
@@ -341,7 +341,7 @@ class _ConfirmationModalState extends State<ConfirmationModal> {
           SnackBar(content: Text("Pick-Up order recorded successfully!")),
         );
 
-        cart.clear(); // clear cart after success
+        cart.clear();
         Navigator.pushNamed(context, '/OrderHistory');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
