@@ -17,6 +17,7 @@ import 'package:pantry/pages/scan.dart';
 import 'package:pantry/theme/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: islog ? HomePage() : LoginPage(),
+      home: SplashScreen(isLoggedIn: islog),
       theme: Provider.of<Themeprovider>(context).themedata,
       routes: {
         '/loginpage':(context)=> LoginPage(),
@@ -62,6 +63,71 @@ class MyApp extends StatelessWidget {
         '/ProductQr':(context) => Qrproduct(),
         '/CartQR':(context)=>CartQRPage(),
       },
+    );
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  final bool isLoggedIn;
+  
+  const SplashScreen({super.key, required this.isLoggedIn});
+
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool _animationCompleted = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(seconds: 3),
+      vsync: this,
+    );
+    
+    // tunggu animation main sampai habis
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed && !_animationCompleted) {
+        _animationCompleted = true;
+        _navigateToNextScreen();
+      }
+    });
+    
+    // Tayangan bermula
+    _controller.forward();
+  }
+
+  void _navigateToNextScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget.isLoggedIn ? HomePage() : LoginPage(),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: Lottie.asset(
+          'assets/animations/splash_intro.json',
+          controller: _controller,
+          fit: BoxFit.cover, // Display full tapi x 4k
+        ),
+      ),
     );
   }
 }
