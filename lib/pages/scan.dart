@@ -29,8 +29,8 @@ class _QRScanPageState extends State<QRScanPage> {
 
     try {
       final DefaultViewRequest request = DefaultViewRequest(
-        scanType: HmsScanTypes.QRCode, // <-- correct constant
-        viewType: 1, // 1 = QR code view (default view)
+        scanType: HmsScanTypes.QRCode, 
+        viewType: 1, 
       );
 
       final ScanResponse? response = await HmsScanUtils.startDefaultView(request);
@@ -49,7 +49,7 @@ class _QRScanPageState extends State<QRScanPage> {
           );
         }
       } else {
-        // user cancelled or nothing scanned
+        
         debugPrint('Scan canceled or returned empty result');
       }
     } catch (e) {
@@ -68,8 +68,6 @@ class _QRScanPageState extends State<QRScanPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(scanResult, textAlign: TextAlign.center),
-            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: startScan,
               child: const Text("Start Scanning"),

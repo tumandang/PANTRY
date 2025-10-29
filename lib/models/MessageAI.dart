@@ -1,10 +1,12 @@
 class Messageai {
   final String message;
   final bool IsUser;
+  final Map<String, String>? metadata; 
 
   Messageai({
     required this.message,
     required this.IsUser,
+    this.metadata,
   });
 
   // List <Messageai> mymessage = [

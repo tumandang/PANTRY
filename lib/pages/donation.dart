@@ -1,3 +1,4 @@
+
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
@@ -216,7 +217,7 @@ class _DonationPageState extends State<DonationPage> {
                   );
                 }
                 final response = await request.send();
-                final respStr = await response.stream.bytesToString();
+                // final respStr = await response.stream.bytesToString();
       
                 if (response.statusCode == 200) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -336,7 +337,7 @@ class _DonationPageState extends State<DonationPage> {
                   controller: ammount,
                   hintText: "50",
                   obscureText: false,
-                  label: 'Ammount',
+                  label: 'Amount',
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(

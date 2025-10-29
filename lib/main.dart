@@ -11,6 +11,7 @@ import 'package:pantry/pages/foodpage.dart';
 import 'package:pantry/pages/helppage.dart';
 import 'package:pantry/pages/home.dart';
 import 'package:pantry/pages/order.dart';
+import 'package:pantry/pages/privacy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pantry/pages/profile.dart';
 import 'package:pantry/pages/scan.dart';
@@ -18,9 +19,14 @@ import 'package:pantry/theme/themeprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/services.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   final prefs = await SharedPreferences.getInstance();
   final isLoggedIn = prefs.getString('id') != null;
   runApp(
@@ -62,7 +68,9 @@ class MyApp extends StatelessWidget {
         '/OrderHistory':(context)=> OrderHistoryPage(),
         '/ProductQr':(context) => Qrproduct(),
         '/CartQR':(context)=>CartQRPage(),
-      },
+        '/privacypolicy':(context)=> PrivacyPolicyPage(),
+        
+              },
     );
   }
 }

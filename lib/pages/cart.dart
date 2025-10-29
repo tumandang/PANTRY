@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:pantry/models/food.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:html/dom.dart' as dom;
+
 import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -364,7 +364,7 @@ class _CardDiaglogState extends State<CardDiaglog> {
         final data = jsonDecode(response.body);
         if (data['success'] == true) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Order submitted successfully",style: TextStyle(color: Colors.red))),
+            SnackBar(content: Text("Order submitted successfully",style: TextStyle(color: Colors.green))),
           );
            Provider.of<Cartmanager>(context, listen: false).clear();
            Navigator.pushNamed(context, '/OrderHistory');
@@ -464,7 +464,7 @@ class _CardDiaglogState extends State<CardDiaglog> {
 
                 await postorder(date: _dateController.text, time: _timeController.text, items: items);
 
-                Navigator.pop(context);
+                
               },
 
               icon: Icon(Icons.published_with_changes_rounded),
@@ -515,15 +515,15 @@ class _CardDiaglogState extends State<CardDiaglog> {
         final picktime_min = toMinutes(value);
         final restStart = toMinutes(const TimeOfDay(hour: 12, minute: 0));
         final restEnd = toMinutes(const TimeOfDay(hour: 14, minute: 0));
-        final nightStart = toMinutes(const TimeOfDay(hour: 21, minute: 0));
-        final nightEnd = toMinutes(const TimeOfDay(hour: 08, minute: 0));
+        final nightStart = toMinutes(const TimeOfDay(hour: 19, minute: 0));
+        final nightEnd = toMinutes(const TimeOfDay(hour: 10, minute: 30));
         if (picktime_min >= restStart && picktime_min <= restEnd ){
           ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("You can’t pick time during rest period",style: TextStyle(color: Colors.red),)),
         );
         return;
         }
-        else if (picktime_min >= nightStart && picktime_min <= nightEnd){
+        if (picktime_min >= nightStart || picktime_min <= nightEnd){
           ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("You can’t pick time during night period",style: TextStyle(color: Colors.red),)),
         );
