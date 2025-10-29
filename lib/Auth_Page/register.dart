@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:pantry/components/Mybutton.dart';
-import 'package:pantry/components/squaretile.dart';
+
 import 'package:pantry/components/textfield.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,82 +15,85 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-    final matrictid = TextEditingController();
-    final email = TextEditingController();
-    final name = TextEditingController();
-    final confirmPassword = TextEditingController();
-    final password = TextEditingController();
+  final matrictid = TextEditingController();
+  final email = TextEditingController();
+  final name = TextEditingController();
+  final confirmPassword = TextEditingController();
+  final password = TextEditingController();
+  bool _agreeToPrivacy = false;
 
-  Future<void> _register()async{
-      final role = "Student";
-      final url = Uri.parse('https://eduhosting.top/campusfoodpantry/api_register.php');
+  Future<void> _register() async {
+    final role = "Student";
+    final url = Uri.parse(
+      'https://eduhosting.top/campusfoodpantry/api_register.php',
+    );
+    if (!_agreeToPrivacy) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "You must agree to the Privacy Policy to continue",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
+      return;
+    }
+    if (password.text != confirmPassword.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Password Does not match",
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      );
+      return;
+    }
 
-      if (password.text != confirmPassword.text) {
-            ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                "Password Does not match",
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          );
-          return;
-        }
-      
-       
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: jsonEncode({
+          'name': name.text,
+          'id': matrictid.text,
+          'email': email.text,
+          'password': password.text.trim(),
+          'confirmPassword': confirmPassword.text.trim(),
+          'role': role,
+        }),
+      );
 
-      try {
-        final response = await http.post(
-          url,
-          headers: {"Content-Type": "application/json",
-            "Accept": "application/json"},
-          body:jsonEncode({
-            'name': name.text,
-            'id':matrictid.text,
-            'email': email.text,
-            'password': password.text.trim(),
-            'confirmPassword':confirmPassword.text.trim(),
-            'role':role
-          },) 
-        );
+      final data = jsonDecode(response.body);
 
-        final data = jsonDecode(response.body);
-
-        if (data['success']) {
-            final prefs = await SharedPreferences.getInstance();
-            await prefs.setString('name', name.text);
-            await prefs.setString('id', matrictid.text);
-            await prefs.setString('role', 'Student');
-            await prefs.setString('email', email.text);
-            Navigator.pushReplacementNamed(
-              context,
-              '/homepage',
-            );
-          
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                data['message'],
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          );
-        }
-      } catch (e) {
-        
+      if (data['success']) {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('name', name.text);
+        await prefs.setString('id', matrictid.text);
+        await prefs.setString('role', 'Student');
+        await prefs.setString('email', email.text);
+        Navigator.pushReplacementNamed(context, '/homepage');
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Error: $e', style: TextStyle(color: Colors.red)),
+            content: Text(data['message'], style: TextStyle(color: Colors.red)),
           ),
         );
       }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: $e', style: TextStyle(color: Colors.red)),
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -104,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-          
+
                     // logo
                     children: [
                       Image.asset(
@@ -124,9 +127,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               fontFamily: 'SpecialGhotic',
                             ),
                           ),
-          
+
                           Text(
-                            "No Students Eat Alone",
+                            "Every Student Deserves a Meal",
                             style: TextStyle(
                               color: Colors.grey.shade600,
                               fontSize: 12,
@@ -139,9 +142,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ],
                   ),
                 ),
-          
+
                 SizedBox(height: 25),
-          
+
                 //username textfield
                 MyTextField(
                   label: 'Name',
@@ -174,7 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true,
                 ),
                 SizedBox(height: 15),
-          
+
                 //confirm Password textfield
                 MyTextField(
                   label: 'Confirm Password',
@@ -182,7 +185,44 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: "Re-Type Your Password",
                   obscureText: true,
                 ),
-          
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        value: _agreeToPrivacy,
+                        onChanged: (value) {
+                          setState(() {
+                            _agreeToPrivacy = value!;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            // Optionally open Privacy Policy page
+                            Navigator.pushNamed(context, '/privacypolicy');
+                          },
+                          child: Text.rich(
+                            TextSpan(
+                              text: "I agree to the ",
+                              children: [
+                                TextSpan(
+                                  text: "Privacy Policy",
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 15),
                 //sign in button
                 Mybutton(
@@ -191,7 +231,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                 ),
                 SizedBox(height: 25),
-          
+
                 //or Continue
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -211,7 +251,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
                 SizedBox(height: 25),
-          
+
                 // //Google  + Huawei
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
@@ -222,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 //   ],
                 // ),
                 // SizedBox(height: 15),
-          
+
                 // first time here?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

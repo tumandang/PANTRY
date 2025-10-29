@@ -85,8 +85,9 @@ class Fooditem extends StatelessWidget {
                   category: FoodModel.category,
                   quantity: 1,
                   stock: (FoodModel.quantity > 0) ? FoodModel.quantity - 1 : 0,
-                  imageUrl:
-                      'https://eduhosting.top/campusfoodpantry/{FoodModel.image}',
+                  imageUrl: FoodModel.image.startsWith('http')
+                      ? FoodModel.image
+                      : 'https://eduhosting.top/campusfoodpantry/${FoodModel.image}',
                 );
 
                 Provider.of<Cartmanager>(

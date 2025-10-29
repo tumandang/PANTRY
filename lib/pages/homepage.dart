@@ -146,122 +146,10 @@ class _HomeContentPageState extends State<HomeContentPage> {
                 ],
               ),
 
-              // SizedBox(height: 20),
 
-              // Container(
-              //   decoration: BoxDecoration(
-              //     color: Theme.of(context).colorScheme.surface,
-              //     borderRadius: BorderRadius.circular(12),
-              //     border: Border.all(color: Colors.grey.shade300, width: 1.5),
-              //   ),
-              //   padding: EdgeInsets.all(12),
-              //   child: Row(
-              //     children: [
-              //       Icon(
-              //         Icons.search,
-              //         color: Theme.of(context).colorScheme.inversePrimary,
-              //       ),
-              //       SizedBox(width: 10),
-              //       Text(
-              //         'Seacrh',
-              //         style: TextStyle(
-              //           color: Theme.of(context).colorScheme.primary,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
               SizedBox(height: 15),
 
-              // Container(
-              //   alignment: Alignment.centerLeft,
-              //   child: Text(
-              //     'No Student Eats Alone.',
-              //     style: TextStyle(
-              //       color: Colors.black,
-              //       fontFamily: 'SpecialGhotic',
-              //       fontSize: 16,
-              //       fontWeight: FontWeight.bold,
-              //     ),
-              //   ),
-              // ),
 
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(horizontal: 16),
-              //     child: Row(
-              //       children: List.generate(
-              //         myCategory.length,
-              //         (index) => Padding(
-              //           padding: const EdgeInsets.only(right: 10),
-              //           child: GestureDetector(
-              //             onTap: () {
-              //               setState(() {
-              //                 selectedIndex = index;
-              //               });
-              //             },
-              //             child: AnimatedContainer(
-              //               duration: const Duration(milliseconds: 200),
-              //               padding: const EdgeInsets.symmetric(
-              //                 horizontal: 12,
-              //                 vertical: 8,
-              //               ),
-              //               decoration: BoxDecoration(
-              //                 gradient: selectedIndex == index
-              //                     ? const LinearGradient(
-              //                         colors: [Color(0xFFFFC107), Colors.white],
-              //                         begin: Alignment.topLeft,
-              //                         end: Alignment.bottomRight,
-              //                       )
-              //                     : const LinearGradient(
-              //                         colors: [Colors.white, Colors.white],
-              //                       ),
-              //                 borderRadius: BorderRadius.circular(7),
-              //                 border: Border.all(
-              //                   color: selectedIndex == index
-              //                       ? Colors.amber.shade700
-              //                       : Colors.grey.shade300,
-              //                   width: selectedIndex == index ? 2 : 1,
-              //                 ),
-              //                 boxShadow: [
-              //                   BoxShadow(
-              //                     color: Colors.grey.shade400,
-              //                     blurRadius: 5,
-              //                     offset: const Offset(0, 2),
-              //                   ),
-              //                 ],
-              //               ),
-              //               child: Row(
-              //                 mainAxisSize: MainAxisSize.min,
-              //                 children: [
-              //                   Image.asset(
-              //                     myCategory[index].image,
-              //                     width: 25,
-              //                     height: 25,
-              //                     fit: BoxFit.contain,
-              //                   ),
-              //                   const SizedBox(width: 8),
-              //                   Text(
-              //                     myCategory[index].name,
-              //                     style: TextStyle(
-              //                       color: selectedIndex == index
-              //                           ? Colors.black
-              //                           : Colors.grey.shade800,
-              //                       fontFamily: 'CalSans',
-              //                       fontWeight: FontWeight.w600,
-              //                       fontSize: 14,
-              //                     ),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
               Container(
                 height: 150,
                 decoration: BoxDecoration(
@@ -310,8 +198,8 @@ class _HomeContentPageState extends State<HomeContentPage> {
               else if (_foods.isEmpty)
                 Center(
                   child: Text(
-                    "No top pickup items available",
-                    style: TextStyle(color: Colors.white70),
+                    "No top pickup items available or Please connect to the Internet",
+                    style: TextStyle(color: Colors.red),
                   ),
                 )
               else

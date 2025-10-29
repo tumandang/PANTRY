@@ -39,9 +39,17 @@ class _ChatbotPageState extends State<ChatbotPage> {
         setState(() {
           mymessage.add(Messageai(message: reply, IsUser: false));
         });
+        print(
+          "Metadata: ${{'generated_by': 'AI', 'type': 'text', 'timestamp': DateTime.now().toString()}}",
+        );
       } else {
         setState(() {
-          mymessage.add(Messageai(message: "Server error: ${response.statusCode}", IsUser: false));
+          mymessage.add(
+            Messageai(
+              message: "Server error: ${response.statusCode}",
+              IsUser: false,
+            ),
+          );
         });
       }
     } catch (e) {
@@ -61,17 +69,17 @@ class _ChatbotPageState extends State<ChatbotPage> {
         centerTitle: true,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_rounded),
-          color: Colors.amber,
+          color: Colors.blue,
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text.rich(
           TextSpan(
-            text: "Bread",
+            text: "AI-",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             children: [
               TextSpan(
-                text: "Bot",
-                style: TextStyle(color: Colors.amberAccent),
+                text: "DEAL",
+                style: TextStyle(color: Colors.blue),
               ),
             ],
           ),
@@ -93,9 +101,10 @@ class _ChatbotPageState extends State<ChatbotPage> {
                           : Alignment.centerLeft,
                       child: Container(
                         padding: EdgeInsets.all(12),
+
                         decoration: BoxDecoration(
                           color: message.IsUser
-                              ? Colors.amber
+                              ? Colors.blue
                               : Colors.grey.shade300,
                           borderRadius: message.IsUser
                               ? BorderRadius.only(
@@ -109,13 +118,33 @@ class _ChatbotPageState extends State<ChatbotPage> {
                                   bottomRight: Radius.circular(20),
                                 ),
                         ),
-                        child: Text(
-                          message.message,
-                          style: TextStyle(
-                            color:
-                                message.IsUser ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: message.IsUser
+                              ? CrossAxisAlignment.end
+                              : CrossAxisAlignment.start,
+                          children: [
+                            if (!message.IsUser) // Label only for AI messages
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 4),
+                                child: Text(
+                                  "AI-generated",
+                                  style: TextStyle(
+                                    color: Colors.blueGrey,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            Text(
+                              message.message,
+                              style: TextStyle(
+                                color: message.IsUser
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -130,7 +159,11 @@ class _ChatbotPageState extends State<ChatbotPage> {
               ),
             Padding(
               padding: const EdgeInsets.only(
-                  bottom: 32, top: 16, right: 16, left: 16),
+                bottom: 32,
+                top: 16,
+                right: 16,
+                left: 16,
+              ),
               child: Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -152,14 +185,13 @@ class _ChatbotPageState extends State<ChatbotPage> {
                         decoration: InputDecoration(
                           hintText: "Write your message...",
                           border: InputBorder.none,
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 20),
+                          contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         ),
                       ),
                     ),
                     IconButton(
                       onPressed: sendMessage,
-                      icon: Icon(Icons.send, color: Colors.amber),
+                      icon: Icon(Icons.send, color: Colors.blue),
                     ),
                   ],
                 ),
