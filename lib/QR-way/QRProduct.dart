@@ -73,7 +73,16 @@ class _QrProductState extends State<Qrproduct> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.inverseSurface,
-
+      appBar: AppBar(
+        title: const Text('Campus Pantry'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, '/homepage'); 
+          },
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding:  EdgeInsets.all(25.0),

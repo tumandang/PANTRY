@@ -123,7 +123,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
                               ? CrossAxisAlignment.end
                               : CrossAxisAlignment.start,
                           children: [
-                            if (!message.IsUser) // Label only for AI messages
+                            if (!message.IsUser) 
                               Padding(
                                 padding: const EdgeInsets.only(bottom: 4),
                                 child: Text(
