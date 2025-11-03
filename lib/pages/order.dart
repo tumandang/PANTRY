@@ -30,7 +30,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         id = storedID;
       });
 
-      
       await loadOrders(storedID);
     } else {
       print("No student ID found in SharedPreferences.");
@@ -72,7 +71,16 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Order History'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Order History'),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushNamed(context, '/homepage'); 
+          },
+        ),
+      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : orders.isEmpty

@@ -63,7 +63,7 @@ class _QRScanPageState extends State<QRScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Scan Pantry QR")),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
